@@ -15,8 +15,18 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
+            $table->text('text');
+            $table->string('name');
+            $table->string('email');
+            $table->string('site');
+            $table->integer('parent_id');
             $table->timestamps();
         });
+
+        DB::unprepared('ALTER TABLE comments MODIFY COLUMN updated_at 
+TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
+        DB::unprepared('ALTER TABLE comments MODIFY COLUMN created_at
+TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
     }
 
     /**

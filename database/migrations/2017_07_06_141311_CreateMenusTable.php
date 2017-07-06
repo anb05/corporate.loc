@@ -15,8 +15,16 @@ class CreateMenusTable extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title');
+            $table->string('path');
+            $table->integer('parent');
             $table->timestamps();
         });
+
+        DB::unprepared('ALTER TABLE menus MODIFY COLUMN updated_at 
+TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
+        DB::unprepared('ALTER TABLE menus MODIFY COLUMN created_at
+TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
     }
 
     /**

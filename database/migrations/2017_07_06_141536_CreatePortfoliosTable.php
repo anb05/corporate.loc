@@ -15,8 +15,18 @@ class CreatePortfoliosTable extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title');
+            $table->text('text');
+            $table->string('customer',150);
+            $table->string('alias',150)->unique();
+            $table->string('img');
             $table->timestamps();
         });
+
+        DB::unprepared('ALTER TABLE portfolios MODIFY COLUMN updated_at 
+TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
+        DB::unprepared('ALTER TABLE portfolios MODIFY COLUMN created_at
+TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
     }
 
     /**

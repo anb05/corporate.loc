@@ -15,8 +15,16 @@ class CreateSlidersTable extends Migration
     {
         Schema::create('sliders', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('img');
+            $table->text('desc');
+            $table->string('title');
             $table->timestamps();
         });
+
+        DB::unprepared('ALTER TABLE sliders MODIFY COLUMN updated_at 
+TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
+        DB::unprepared('ALTER TABLE sliders MODIFY COLUMN created_at
+TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
     }
 
     /**
