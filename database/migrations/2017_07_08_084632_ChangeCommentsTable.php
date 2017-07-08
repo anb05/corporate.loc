@@ -14,15 +14,15 @@ class ChangeCommentsTable extends Migration
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->unsignedInteger('articles_id')
-                ->default(1);
-            $table->foreign('articles_id')
-                ->references('id')->on('articles');
-
             $table->unsignedInteger('user_id')
-                ->nullable();
+                ->nullable()->after('id');
             $table->foreign('user_id')
                 ->references('id')->on('users');
+
+            $table->unsignedInteger('articles_id')
+                ->default(1)->after('user_id');
+            $table->foreign('articles_id')
+                ->references('id')->on('articles');
         });
     }
 
