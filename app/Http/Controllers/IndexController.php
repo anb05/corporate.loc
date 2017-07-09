@@ -3,6 +3,8 @@
 namespace Corp\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Corp\Repositories\MenusRepository;
+use Corp\Menu;
 
 class IndexController extends SiteController
 {
@@ -17,7 +19,7 @@ class IndexController extends SiteController
          * свойство bar содержит часть имени html сласса указывающее
          * на место расположения сайдбара
          */
-        parent::__construct();
+        parent::__construct(new MenusRepository(new Menu()));
         $this->template = env('THEME').'.index';
         $this->bar = 'right';
     }
