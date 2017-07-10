@@ -72,6 +72,15 @@ class SiteController extends Controller
     protected function renderOutput()
     {
         $menu = $this->getMenu();
+        $navigation = view(env('THEME').'.navigation',['menu' => $menu])->render();
+        $this->vars['navigation'] = $navigation;
+
+        return view($this->template)->with($this->vars);
+    }
+
+    protected function getMenu()
+    {
+        $menus = $this->m_rep->get()->toArray();
         /*
          * Методами PHP формируем главное меню приложения
          * Меню состоит из основного или главного меню и подменю.
@@ -83,16 +92,73 @@ class SiteController extends Controller
          *                       относится подменю (например, число 3
          *                       означает, что это подменю, относящееся к
          *                       третьему пукту меню.
+         * Результирующий массив имеет следующий вид:
+         *
+         * $menu = [
+         *            `menus.id` => [
+         *                              'title' => `menus.title`,
+         *                              'path'  => `menus.path`,
+         *                              'child' => [
+         *                                             `menus.id` => [
+         *                                                               'title' => `menus.title`,
+         *                                                               'path'  => `menus.path`,
+         *                                                           ]
+         *
+         *                                             `menus.id` => [
+         *                                                               'title' => `menus.title`,
+         *                                                               'path'  => `menus.path`,
+         *                                                           ]
+         *
+         *                                             `menus.id` => [
+         *                                                               'title' => `menus.title`,
+         *                                                               'path'  => `menus.path`,
+         *                                                           ]
+         *                                         ]
+         *                          ],
+         *
+         *            `menus.id` => [
+         *                              'title' => `menus.title`,
+         *                              'path'  => `menus.path`,
+         *                              'child' => [
+         *                                             `menus.id` => [
+         *                                                               'title' => `menus.title`,
+         *                                                               'path'  => `menus.path`,
+         *                                                           ]
+         *
+         *                                             `menus.id` => [
+         *                                                               'title' => `menus.title`,
+         *                                                               'path'  => `menus.path`,
+         *                                                           ]
+         *
+         *                                             `menus.id` => [
+         *                                                               'title' => `menus.title`,
+         *                                                               'path'  => `menus.path`,
+         *                                                           ]
+         *                                         ]
+         *                          ],
+         *
+         *            `menus.id` => [
+         *                              'title' => `menus.title`,
+         *                              'path'  => `menus.path`,
+         *                              'child' => [
+         *                                             `menus.id` => [
+         *                                                               'title' => `menus.title`,
+         *                                                               'path'  => `menus.path`,
+         *                                                           ]
+         *
+         *                                             `menus.id` => [
+         *                                                               'title' => `menus.title`,
+         *                                                               'path'  => `menus.path`,
+         *                                                           ]
+         *
+         *                                             `menus.id` => [
+         *                                                               'title' => `menus.title`,
+         *                                                               'path'  => `menus.path`,
+         *                                                           ]
+         *                                         ]
+         *                          ],
+         *         ]
          */
-        $navigation = view(env('THEME').'.navigation',['menu' => $menu])->render();
-        $this->vars['navigation'] = $navigation;
-
-        return view($this->template)->with($this->vars);
-    }
-
-    protected function getMenu()
-    {
-        $menus = $this->m_rep->get()->toArray();
         $menu = [];
         foreach ($menus as $item) {
             if ($item['parent'] === 0) {
