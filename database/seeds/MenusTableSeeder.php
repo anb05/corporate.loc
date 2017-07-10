@@ -25,17 +25,17 @@ class MenusTableSeeder extends Seeder
             [
                 'title'  => 'Компьютеры',
                 'path'   => 'http://corporate.loc/articles/cat/computers',
-                'parent' => 0,
+                'parent' => 3,
             ],
             [
                 'title'  => 'Интересное',
                 'path'   => 'http://corporate.loc/articles/cat/interesting',
-                'parent' => 0,
+                'parent' => 3,
             ],
             [
                 'title'  => 'Советы',
                 'path'   => 'http://corporate.loc/articles/cat/soveti',
-                'parent' => 0,
+                'parent' => 3,
             ],
             [
                 'title'  => 'Портфолио',

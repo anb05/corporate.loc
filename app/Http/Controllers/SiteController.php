@@ -72,14 +72,38 @@ class SiteController extends Controller
     protected function renderOutput()
     {
         $menu = $this->getMenu();
-        $navigation = view(env('THEME').'.navigation')->render();
+        /*
+         * Методами PHP формируем главное меню приложения
+         * Меню состоит из основного или главного меню и подменю.
+         * Отличительным признаком основного меню и подменю является
+         * значение колонки parent таблицы menus БД.
+         * В эту колонку заносится число:
+         *              0 - основное меню;
+         *              1,2..n - номер основновного пункта меню, к которому
+         *                       относится подменю (например, число 3
+         *                       означает, что это подменю, относящееся к
+         *                       третьему пукту меню.
+         */
+        $navigation = view(env('THEME').'.navigation',['menu' => $menu])->render();
         $this->vars['navigation'] = $navigation;
+
         return view($this->template)->with($this->vars);
     }
 
     protected function getMenu()
     {
-        $menu = $this->m_rep->get();
+        $menus = $this->m_rep->get()->toArray();
+        $menu = [];
+        foreach ($menus as $item) {
+            if ($item['parent'] === 0) {
+                $menu[$item['id']]['title'] = $item['title'];
+                $menu[$item['id']]['path']  = $item['path'];
+            } else {
+                $menu[$item['parent']]['child'][$item['id']]['title'] = $item['title'];
+                $menu[$item['parent']]['child'][$item['id']]['path'] = $item['path'];
+            }
+        }
+
         return $menu;
     }
 }
