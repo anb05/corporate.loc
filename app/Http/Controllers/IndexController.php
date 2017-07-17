@@ -4,13 +4,14 @@ namespace Corp\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Corp\Repositories\MenusRepository;
+use Corp\Repositories\SlidersRepository;
 use Corp\Menu;
 
 class IndexController extends SiteController
 {
-    public function __construct()
+    public function __construct(SlidersRepository $s_rep)
     {
-        /**
+        /*
          * Конструктор контроллера.
          * Вначале выполняем конструктор родительского класса.
          * Затем определяем какой будем использовать шаблон для
@@ -22,6 +23,8 @@ class IndexController extends SiteController
         parent::__construct(new MenusRepository(new Menu()));
         $this->template = env('THEME').'.index';
         $this->bar = 'right';
+
+        $this->s_rep = $s_rep;
     }
 
     /**
@@ -31,7 +34,38 @@ class IndexController extends SiteController
      */
     public function index()
     {
+        /*
+         * Слайдер отображается только на главной странице сайта,
+         * поэтому формированме слайдера осуществляется в этом методе
+         */
+
+        /*
+         * Формируем метод последник, который будет обращаться к репозиторию
+         * для получения необходимой информации.
+         *
+         * Такие методы посредники необходимы для обеспечения высокой гибкости
+         * создаваемого приложения.
+         */
+        $sliderItems = $this->getSliders();
+//        dd($sliderItems);
+        $sliders = view(env('THEME') . '.slider',
+            ['sliders' => $sliderItems])->render();
+
+        $this->vars['sliders'] = $sliders;
+
         return $this->renderOutput();
+    }
+
+
+    public function getSliders()
+    {
+        /*
+         * Всё что касается работы с базой данный выносится в репозиторий.
+         * Значит запрашиваем данные из БД через репозиторий.
+         */
+        $sliders = $this->s_rep->get();
+
+        return $sliders;
     }
 
     /**
