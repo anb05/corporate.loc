@@ -65,6 +65,32 @@ class IndexController extends SiteController
          */
         $sliders = $this->s_rep->get();
 
+        /*
+         * Метод isEmpty - это хелпер фреймворка, который используется для
+         * работы с коллекциями.
+         * Возвращает TRUE в случае ПУСТОЙ коллекции.
+         */
+        if ($sliders->isEmpty()) {
+            return false;
+        }
+
+        /*
+         * Метод transform() позволяет описать функцию, которая будет
+         * вызвана для КАЖДОГО элемента коллекции (Обходит все элементы коллекции по циклу).
+         * При этом в $item попадает модель для которой вызывается эта функция,
+         * а в переменную $key попадает индекс этой коллекции.
+         */
+        $sliders->transform(function ($item, $key) {
+            /*
+             * Добавляем информацию о директории в которой хранятся изображения.
+             * Эту информацию будем брать из файла настроек settings.php
+             */
+            $item->img = \Config::get('settings.slider_path') . '/' . $item->img;
+            return  $item;
+        });
+
+//        dd($sliders);
+
         return $sliders;
     }
 
@@ -73,7 +99,7 @@ class IndexController extends SiteController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+     public function create()
     {
         //
     }

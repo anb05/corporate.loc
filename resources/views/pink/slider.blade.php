@@ -3,64 +3,42 @@
     <div id="slider-cycle" class="slider cycle no-responsive slider_cycle group" style="height:485px;">
         <ul class="slider">
 
+            {{-- для формирования счётчика можно использовать ключи в цикле @foreach ниже. --}}
+            {{-- Однако для практики и тренировки сформируем правило шаблонизатора BLADE. --}}
+            {{-- для этого в App\ServiceProvider в методе boot() создадим директиву --}}
+            @set($i,1)
+
+
             @foreach($sliders as $slider)
                 <li>
-                    <div class="slide-holder" style="background:  url({{ asset(env('THEME')) }}'/images/slider-cycle/{{ $slider->img }}') no-repeat center center" style="height:483px;">
-
-
-
-
-
-
+                    <div class="slide-holder" style="background:  url('{{ asset(env('THEME')) }}/images/{{ $slider->img }}') no-repeat center center" style="height:483px;">
                         <div class="slide-content-holder inner" style="height:483px;">
-                            <div class="slide-content-holder-content" style="position: absolute; top:30px;right:650px;">
-                                <div class="slide-title">
-                                    <h2 style="color:#fff">CORPORATE, MULTIPURPOSE.. <br /><span>PINK RIO</span></h2>
+
+                            @if ($i%2 !== 0)
+                                <div class="slide-content-holder-content" style="position: absolute; top:30px;right:650px;">
+                                    <div class="slide-title">
+                                        {!! $slider->desc !!}
+                                    </div>
+                                    <div class="slide-content" style="color:#fff">
+                                       <p>{!! $slider->title !!}</p>
+                                    </div>
                                 </div>
-                                <div class="slide-content" style="color:#fff">
-                                    <p>Nam id quam a odio euismod pellentesque. Etiam congue rutrum risus non vestibulum. Quisque a diam at ligula blandit consequat. Mauris ac mi velit, a tempor neque</p>
+                            @else
+                                <div class="slide-content-holder-content" style="position: absolute; top:80px;left:500px;">
+                                    <div class="slide-title">
+                                        {!! $slider->desc !!}
+                                    </div>
+                                    <div class="slide-content" style="color:#fff">
+                                        <p>{!! $slider->title !!}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
-
                 </li>
 
+                @set($i, $i + 1)
             @endforeach
-            <li>
-                <div class="slide-holder" style="background:  url({{ asset(env('THEME')) }}'/images/slider-cycle/xx.jpg') no-repeat center center" style="height:483px;">
-                    <div class="slide-content-holder inner" style="height:483px;">
-                        <div class="slide-content-holder-content" style="position: absolute; top:30px;right:650px;">
-                            <div class="slide-title">
-                                <h2 style="color:#fff">CORPORATE, MULTIPURPOSE.. <br /><span>PINK RIO</span></h2>
-                            </div>
-                            <div class="slide-content" style="color:#fff">
-                                <p>Nam id quam a odio euismod pellentesque. Etiam congue rutrum risus non vestibulum. Quisque a diam at ligula blandit consequat. Mauris ac mi velit, a tempor neque</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="slide-holder" style="background:  url({{ asset(env('THEME')) }}'/images/slider-cycle/00314.jpg') no-repeat center center" style="height:483px;">
-                    <div class="slide-content-holder inner" style="height:483px;">
-                        <div class="slide-content-holder-content" style="position: absolute; top:80px;left:500px;">
-                            <div class="slide-title">
-                                <h2 style="color:#fff">PINKRIO. <span>STRONG AND POWERFUL.</span></h2>
-                            </div>
-                            <div class="slide-content" style="color:#fff">
-                                <p>Nam id quam a odio euismod pellentesque. Etiam congue rutrum risus non vestibulum. Quisque a diam at ligula blandit consequat. Mauris ac mi velit, a tempor neque</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="slide-holder" style="background:  url({{ asset(env('THEME')) }}'/images/slider-cycle/dd.jpg') no-repeat center center" style="height:483px;">
-                    <div class="slide-content-holder inner" style="height:483px;">
-                    </div>
-                </div>
-            </li>
         </ul>
 
         <div id="yit-widget-area" class="group">
