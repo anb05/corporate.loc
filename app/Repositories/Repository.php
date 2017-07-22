@@ -17,7 +17,13 @@ abstract class Repository
         $this->model = $model;
     }
 
-    public function get($select = '*',  $take = false)
+    /**
+     * @param string|array $select These are the field names in database
+     * @param integer|bool $take   This is a number of items
+     *
+     * @return mixed
+     */
+    public function get($select = '*', $take = false)
     {
         $builder = $this->model->select($select);
 //        dd($builder->get());
