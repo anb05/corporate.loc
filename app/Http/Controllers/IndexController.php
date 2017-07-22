@@ -2,6 +2,7 @@
 
 namespace Corp\Http\Controllers;
 
+use Corp\Repositories\PortfoliosRepository;
 use Illuminate\Http\Request;
 use Corp\Repositories\MenusRepository;
 use Corp\Repositories\SlidersRepository;
@@ -9,7 +10,7 @@ use Corp\Menu;
 
 class IndexController extends SiteController
 {
-    public function __construct(SlidersRepository $s_rep)
+    public function __construct(SlidersRepository $s_rep, PortfoliosRepository $p_rep)
     {
         /*
          * Конструктор контроллера.
@@ -25,6 +26,8 @@ class IndexController extends SiteController
         $this->bar = 'right';
 
         $this->s_rep = $s_rep;
+
+        $this->p_rep = $p_rep;
     }
 
     /**
@@ -34,6 +37,20 @@ class IndexController extends SiteController
      */
     public function index()
     {
+        /*
+         * Создаём контент используя функцию для получения данных
+         */
+        $portfolios = $this->getPortfolio();
+
+        /*
+         * Для отображения данных формируем формируем строку из шаблона content.blade.php
+         * используя функцию-хелпер view с передачей в качестве параметров полного пути к шаблону
+         * и коллекцию работ в переменной $portfolios.
+         */
+        $content = view(env('THEME') . '.content')->with('portfolios', $portfolios)->render();
+        $this->vars['content'] = $content;
+
+//        dd($portfolio);
         /*
          * Слайдер отображается только на главной странице сайта,
          * поэтому формированме слайдера осуществляется в этом методе
@@ -158,5 +175,12 @@ class IndexController extends SiteController
     public function destroy($id)
     {
         //
+    }
+
+    protected function getPortfolio()
+    {
+        $portfolio = $this->p_rep->get('*', \Config::get('settings.home_port_count'));
+
+        return $portfolio;
     }
 }

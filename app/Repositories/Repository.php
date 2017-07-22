@@ -17,10 +17,13 @@ abstract class Repository
         $this->model = $model;
     }
 
-    public function get()
+    public function get($select = '*',  $take = false)
     {
-        $builder = $this->model->select('*');
+        $builder = $this->model->select($select);
 //        dd($builder->get());
+        if ($take) {
+            $builder->take($take);
+        }
         return $builder->get();
     }
 }
