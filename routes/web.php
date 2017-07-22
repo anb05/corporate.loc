@@ -57,3 +57,11 @@ Route::resource('/', 'IndexController',
  * В нём будет сосредоточена основная логика пользовательской части.
  */
 
+/**
+ *
+ */
+Route::resource('portfolios', 'PortfolioController', [
+    'parameters' => [
+        'portfolios' => 'alias',
+    ]
+]);
