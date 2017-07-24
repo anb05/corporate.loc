@@ -76,6 +76,14 @@ class IndexController extends SiteController
         $articles = $this->getArticles();
         $this->contentRightBar = view(env('THEME') . '.indexBar')->with('articles', $articles)->render();
 
+        /**
+         * Lesson 10
+         * Переопределяем свойства для хедера т.к. в siteController.php они не определены
+         */
+        $this->keywords = 'Home Page';
+        $this->meta_desc = 'Home Page';
+        $this->title = 'Home Page';
+
         return $this->renderOutput();
     }
 

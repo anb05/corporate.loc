@@ -4,7 +4,10 @@
         <div class="hentry group">
             <div class="section portfolio">
 
-                <h3 class="title">Latest projects</h3>
+                {{-- Lesson 10--}}
+                {{-- Для вывода русского языка можно использовать фасад Lang::get() --}}
+                {{-- или функцию - хелпер trans --}}
+                <h3 class="title">{{ trans('ru.latest_projects') }}</h3>
 
                 @foreach($portfolios as $key => $item)
                     @if ($key === 0)

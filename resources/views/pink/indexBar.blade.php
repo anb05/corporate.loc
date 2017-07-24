@@ -1,7 +1,10 @@
 <div class="widget-first widget recent-posts">
     @if($articles)
 
-        <h3>From our blog</h3>
+        {{-- Lesson 10--}}
+        {{-- Для вывода русского языка можно использовать фасад Lang::get() --}}
+        {{-- или функцию - хелпер trans --}}
+        <h3>{{ trans('ru.from_blog') }}</h3>
         <div class="recent-post group">
             @foreach($articles as $article)
                 <div class="hentry-post group">

@@ -31,6 +31,23 @@ class SiteController extends Controller
      */
     protected $m_rep;
 
+    // Lesson 10
+    // Вводятся свойства для формирования хедера
+    /**
+     * @var $keywords string Ключевые слова для хедера
+     */
+    protected $keywords;
+
+    /**
+     * @var string Описание
+     */
+    protected $meta_desc;
+
+    /**
+     * @var string $title Для хедера
+     */
+    protected $title;
+
     /**
      * Имя шаблона для отображения конкретной страницы
      * @var string
@@ -59,7 +76,7 @@ class SiteController extends Controller
      * Свойство содержащее контент левого сайдбара
      * @var bool|string
      */
-    protected $contentLeftBar = false;
+    protected $contentLeftBar = 'no';
 
     public function __construct(MenusRepository $m_rep)
     {
@@ -79,6 +96,22 @@ class SiteController extends Controller
             $rightBar = view(env('THEME') . '.rightBar')->with('content_rightBar', $this->contentRightBar)->render();
             $this->vars['rightBar'] = $rightBar;
         }
+
+        $this->vars['bar'] = $this->bar;
+
+        /*
+         * Lesson 10
+         * Формируем переменную футер
+         */
+        $footer = view(env('THEME') . '.footer')->render();
+        $this->vars['footer'] = $footer;
+
+        /**
+         * Добавляем переменные для хедера
+         */
+        $this->vars['keywords'] = $this->keywords;
+        $this->vars['meta_desc'] = $this->meta_desc;
+        $this->vars['title'] = $this->title;
 
         return view($this->template)->with($this->vars);
     }
