@@ -23,13 +23,18 @@ abstract class Repository
      *
      * @return mixed
      */
-    public function get($select = '*', $take = false)
+    public function get($select = '*', $take = false, $pagination = false)
     {
         $builder = $this->model->select($select);
 //        dd($builder->get());
         if ($take) {
             $builder->take($take);
         }
+
+        if ($pagination) {
+            return $this->check(($builder->paginate(Config::get('settings.paginate'))));
+        }
+
         return $this->check($builder->get());
     }
 
