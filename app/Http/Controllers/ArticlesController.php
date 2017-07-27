@@ -2,6 +2,7 @@
 
 namespace Corp\Http\Controllers;
 
+use Corp\Repositories\CommentsRepository;
 use Illuminate\Http\Request;
 use Corp\Repositories\PortfoliosRepository;
 use Corp\Repositories\ArticlesRepository;
@@ -10,7 +11,7 @@ use Corp\Menu;
 
 class ArticlesController extends SiteController
 {
-    public function __construct(PortfoliosRepository $p_rep, ArticlesRepository $a_rep)
+    public function __construct(PortfoliosRepository $p_rep, ArticlesRepository $a_rep, CommentsRepository $c_rep)
     {
         /*
          * Конструктор контроллера.
@@ -30,6 +31,8 @@ class ArticlesController extends SiteController
         $this->p_rep = $p_rep;
 
         $this->a_rep = $a_rep;
+
+        $this->c_rep = $c_rep;
     }
 
     public function index()
@@ -45,6 +48,12 @@ class ArticlesController extends SiteController
 
         $this->vars['content'] = $content;
 
+        $comments = $this->getComments(config('settings.recent_comments'));
+
+        $portfolios = $this->getPortfolios(config('settings.recent_comments'));
+
+        $this->contentRightBar = view(env('THEME') . '.articlesBar')->with(['comments' => $comments, 'portfolios' => $portfolios]);
+
         return $this->renderOutput();
     }
 
@@ -57,5 +66,18 @@ class ArticlesController extends SiteController
         }
 
         return $articles;
+    }
+
+    public function getComments($take)
+    {
+        $comments = $this->c_rep->get(['text', 'name', 'email', 'site', 'articles_id', 'user_id'], $take);
+        return $comments;
+    }
+
+    public function getPortfolios($take)
+    {
+        $portfolios = $this->p_rep->get(['title', 'text', 'alias', 'customer', 'img', 'filter_alias'], $take);
+
+        return $portfolios;
     }
 }
