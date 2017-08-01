@@ -8,7 +8,7 @@ class Comment extends Model
 {
     public function article()
     {
-        return $this->belongsTo('Corp\Article');
+        return $this->belongsTo('Corp\Article', 'articles_id');
     }
 
     public function user()

@@ -11,4 +11,5 @@ return [
     'read_more' => 'Читай далее',
     'articles_no' => '<h2>Записей нет</h2>',
     'latest_projects' => 'Последние работы',
+    'Latest_comments' => 'Последние комментарии',
 ];
